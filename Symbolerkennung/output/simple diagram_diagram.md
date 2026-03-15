@@ -1,0 +1,4 @@
+```mermaid
+stateDiagram-v2
+    [*] --> [*]
+```

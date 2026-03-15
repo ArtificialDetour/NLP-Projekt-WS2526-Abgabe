@@ -1,0 +1,24 @@
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Symbolerkennung
+best_vit_model.pth
+
+
+
+Ausarbeitung.tex
+literatur.bib
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Models Ordner wird nicht mit hochgeladen, da die Dateien zu groß sind
+models/**/checkpoint-*/
+models/**/*.pt
+models/**/*.safetensors
+
+models/
+
+models/**/training_args.bin

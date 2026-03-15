@@ -1,0 +1,56 @@
+stateDiagram-v2
+    Node2 : Node 2
+    [*] --> [*]
+    Node2 --> [*]
+
+
+
+
+    \addcontentsline{toc}{subsection}{Gesamtarchitektur der Diagrammerkennungs-Pipeline}
+\subsection*{Gesamtarchitektur der Diagrammerkennungs-Pipeline}
+Die Architektur der Diagrammerkennungs-Pipeline ist als modularer, entkoppelter 
+Prozess konzipiert, der die Herausforderung der Diagrammdigitalisierung in spezialisierte 
+Teilaufgaben zerlegt. Im Gegensatz zu komplexen End-to-End-Ansätzen wird hier eine strikte 
+Trennung zwischen der visuellen Symbolklassifizierung und der logischen Beziehungsextraktion 
+verfolgt. Die Pipeline beginnt mit einer bildbasierten Segmentierung, bei der mittels OpenCV 
+geometrische Primitiva und potenzielle Knotenelemente lokalisiert werden. Diese isolierten 
+Bildausschnitte bilden die Grundlage für die Klassifizierung durch den Vision Transformer (ViT), 
+der die semantische Bedeutung der Symbole (z.\,B. Start-, Aktions- oder Entscheidungsknoten) bestimmt. 
+Abschließend führt eine regelbasierte Rekonstruktionsebene die räumlichen Koordinaten und 
+Klassifikationsergebnisse zusammen, um die logische Topologie des Diagramms zu inferieren 
+und in maschinenlesbare Mermaid-Syntax zu übersetzen. Dieser Prozess ist in drei Hauptphasen 
+unterteilt, wobei die Ausführung der Skripte in einer festgeschriebenen Reihenfolge erfolgen muss:
+
+\addcontentsline{toc}{subsubsection}{Phase 1: Modelltraining}
+\subsubsection*{Phase 1: Modelltraining}
+In der ersten Phase wird das zugrunde liegende Klassifikationsmodell (ViT) auf den spezifischen Datensatz handgezeichneter UML-Symbole trainiert.
+\begin{itemize}
+    \item \textbf{Datei}: \texttt{train.py}
+    \item \textbf{Ablauf}: Das Skript lädt über \texttt{dataset.py} die in \texttt{data/train} und \texttt{data/test} hinterlegten Bilder. Es initialisiert das Modell \texttt{google/vit-base-patch16-224} und führt ein Fine-Tuning über 10 Epochen durch.
+    \item \textbf{Ergebnis}: Die Architektur mit den besten Gewichten wird unter \texttt{output/weights/best\_vit\_model.pth} gespeichert.
+\end{itemize}
+
+\addcontentsline{toc}{subsubsection}{Phase 2: Evaluierung}
+\subsubsection*{Phase 2: Evaluierung}
+Nach dem Training wird die Modellgüte objektiv bewertet.
+\begin{itemize}
+    \item \textbf{Datei}: \texttt{evaluate.py}
+    \item \textbf{Ablauf}: Lädt das gespeicherte Modell und berechnet klassenspezifische Metriken wie Precision, Recall und den F1-Score auf dem Testset.
+    \item \textbf{Ergebnis}: Ergebnisse werden in der Konsole und in \texttt{output/results.md} protokolliert.
+\end{itemize}
+
+\addcontentsline{toc}{subsubsection}{Phase 3: Inferenz und Diagrammrekonstruktion}
+\subsubsection*{Phase 3: Inferenz und Diagrammrekonstruktion}
+\begin{itemize}
+    \item \textbf{Datei}: \texttt{inference.py}
+    \item \textbf{Ablauf}:
+    \begin{enumerate}
+        \item \textbf{Vorverarbeitung}: OpenCV (\texttt{extract\_nodes\_from\_diagram}) extrahiert Bounding-Boxes.
+        \item \textbf{Klassifikation}: Der ViT klassifiziert jeden Bildausschnitt.
+        \item \textbf{Strukturanalyse}: Objekte werden basierend auf UML-Konventionen logisch verbunden.
+        \item \textbf{Code-Generierung}: \texttt{graph\_reconstruction.py} übersetzt die Architektur in Mermaid-Syntax.
+    \end{enumerate}
+    \item \textbf{Ergebnis}: In \texttt{output/} entstehen Markdown-Dateien mit dem fertigen Mermaid-Code. Zusätzlich werde
+\end{itemize}
+
+\newpage
