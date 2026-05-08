@@ -169,3 +169,11 @@ NLP-Projekt-WS2526-Abgabe/
 ├── Anfangsidee/                  # Archiv: erster Prototyp (nicht produktiv)
 └── README.md
 ```
+
+---
+
+## Autoren
+
+**Bleron Beqiri & Dominik Peschke**
+
+&copy; 2026 Bleron Beqiri & Dominik Peschke. Alle Rechte vorbehalten.
